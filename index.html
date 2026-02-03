@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will you go to church with me Paula🤩</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      font-family: "Comic Neue", cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1c509e, #55489a);
+    }
+
+    .card {
+      background: white;
+      /* Changed padding to be slightly smaller for mobile */
+      padding: 20px; 
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      
+      /* RESPONSIVE WIDTH SETTINGS */
+      width: 90%; 
+      max-width: 420px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #ff4d6d;
+      font-size: 1.5rem; /* Slightly responsive font size */
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px; /* Slightly smaller gap for phones */
+      margin-top: 20px;
+      padding: 30px 0;
+      flex-wrap: wrap; /* Allows buttons to stack if screen is VERY small */
+    }
+
+    button {
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      /* Prevents user from zooming in by double tapping buttons */
+      touch-action: manipulation; 
+    }
+
+    #yesBtn {
+      background-color: #4dd0ff;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    .red-yes {
+      background-color: red !important;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    /* === PARTICLES BACKGROUND === */
+    .particles {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    }
+
+    .particle {
+    position: absolute;
+    bottom: -20px;
+    animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(-120vh) scale(1.3);
+        opacity: 0;
+    }
+    }
+
+    /* Make sure card stays above particles */
+    .card {
+    position: relative;
+    z-index: 1;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="particles"></div>
+
+  <div class="card">
+    <h1 id="question">Will you go to church with me Paula🤩?</h1>
+    <div class="buttons">
+      <button id="yesBtn">Yes 🔥</button>
+      <button id="noBtn">No ☹️</button>
+    </div>
+  </div>
+
+<script>
+window.onload = () => {
+
+    // === PARTICLES SYSTEM ===
+    const particleContainer = document.querySelector(".particles");
+
+    function createParticle() {
+    const p = document.createElement("div");
+    p.className = "particle";
+
+    const size = Math.random() * 12 + 8;
+    const duration = Math.random() * 8 + 6;
+
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.fontSize = size + "px";
+    p.style.animationDuration = duration + "s";
+
+    // Heart particle
+    p.textContent = "✝️";
+
+    particleContainer.appendChild(p);
+
+    setTimeout(() => p.remove(), duration * 1000);
+    }
+
+    // Spawn particles continuously
+    setInterval(createParticle, 450);
+
+
+  const steps = [
+    {
+      question: "You know you want to? 😏",
+      yesMessage: "Christ approves 👍👍👍"
+    },
+    {
+      question: "But it's not as nice without you😭",
+      yesMessage: "Let's goooooo!!<br>my sister in christ!!<br>🔥🔥🔥"
+    },
+    {
+      question: "They'll be wine🍷",
+      yesMessage: "Just don't expect refills😅"
+    },
+    {
+      question: "What neighbour will I turn to?😓",
+      yesMessage: "Yes neighbour!<br>you better not turn the other side💀"
+    },
+    {
+      question: "I guess you just don't fw me, do you 😓?",
+      yesMessage: "Goodbye Paula",
+      special: true
+    }
+  ];
+
+  let stepIndex = -1;
+  let yesScale = 1;
+
+  const sadViolin = new Audio("./assets/Sad Violin.mp3");
+
+  // Fix: Ensure audio stops on retry
+  window.retryGame = () => {
+      sadViolin.pause();
+      sadViolin.currentTime = 0;
+      location.reload();
+  };
+
+  const questionEl = document.getElementById("question");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+
+  noBtn.addEventListener("click", () => {
+    stepIndex++;
+    if (stepIndex >= steps.length) stepIndex = steps.length - 1;
+
+    questionEl.innerHTML = steps[stepIndex].question;
+
+    yesScale += 0.3;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    if (steps[stepIndex].special) {
+      yesBtn.classList.add("red-yes");
+      yesBtn.textContent = "Yes 💔";
+      noBtn.style.display = "none";
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    
+    sadViolin.pause();
+    sadViolin.currentTime = 0;
+
+    if (stepIndex === -1) {
+      document.body.innerHTML = `
+        <div class="card">
+          <h1>YAY!! 🎉🥳</h1>
+          <p>We'll have so much fun 😍</p>
+          <p>Can't wait for sunday🔥</p>
+          <img src="./assets/jesus.jpg" alt="jesus">
+          <br><br>
+          <button onclick="retryGame()">Retry 🔁</button>
+        </div>
+      `;
+      return;
+    }
+
+    const step = steps[stepIndex];
+
+    if (step.special) {
+       sadViolin.play().catch(e => console.log("Audio prevented:", e));
+    }
+
+    document.body.innerHTML = `
+      <div class="card">
+        <h1>${step.yesMessage}</h1>
+        <br>
+        <button onclick="retryGame()">Retry 🔁</button>
+      </div>
+    `;
+  });
+
+};
+</script>
+
+</body>
+</html>
